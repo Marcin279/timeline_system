@@ -1,5 +1,5 @@
 # Używamy obrazu PHP z Apache dla backendu
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
 # Instalacja Composer i rozszerzeń PHP potrzebnych do Laravela
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -31,4 +31,5 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 80
 
 # Uruchomienie Apache
-CMD ["apache2-foreground"]
+# CMD ["apache2-foreground"]
+CMD php-fpm
