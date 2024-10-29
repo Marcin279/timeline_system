@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Event;
+use App\Models\Category;
+
 class EventController extends Controller
 {
     /**
@@ -11,7 +14,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $events = Event::with('category')->get();
+        return response()->json($events);
     }
 
     /**
@@ -19,7 +23,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return response()->json($categories);
     }
 
     /**
@@ -27,7 +32,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'description' => 'required|string',
+            'image' => 'nullable|image',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $event = Event::create($validated);
+
+        return response()->json([
+            'message' => 'Wydarzenie dodane pomyślnie.',
+            'event' => $event,
+        ], 201); // Zwracamy status 201 Created
     }
 
     /**
@@ -41,9 +60,15 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $event = Event::with('category')->find($id);
+
+        if (!$event) {
+            return response()->json(['message' => 'Wydarzenie nie znalezione.'], 404);
+        }
+
+        return response()->json($event);
     }
 
     /**
@@ -51,7 +76,27 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $event = Event::find($id);
+
+        if (!$event) {
+            return response()->json(['message' => 'Wydarzenie nie znalezione.'], 404);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'description' => 'required|string',
+            'image' => 'nullable|image',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $event->update($validated);
+
+        return response()->json([
+            'message' => 'Wydarzenie zaktualizowane pomyślnie.',
+            'event' => $event,
+        ]);
     }
 
     /**
@@ -59,6 +104,14 @@ class EventController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $event = Event::find($id);
+
+        if (!$event) {
+            return response()->json(['message' => 'Wydarzenie nie znalezione.'], 404);
+        }
+
+        $event->delete();
+
+        return response()->json(['message' => 'Wydarzenie usunięte pomyślnie.']);
     }
 }

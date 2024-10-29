@@ -16,39 +16,33 @@ class CreateEventsCategoriesUsersTables extends Migration
 
     public function up()
     {
-        if (!Schema::hasTable('categories')) {
-            Schema::create('categories', function(Blueprint $table) {
-                $table->id(); // Auto-incrementing primary key
-                $table->string('name'); // Column for category name
-                $table->string('color'); // Column for color
-                $table->string('icon'); // Column for icon
-                $table->timestamps(); // Columns for created_at and updated_at
-            });
-        }
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('color')->nullable();
+            $table->string('icon')->nullable();
+            $table->timestamps();
+        });
 
-        if (!Schema::hasTable('events')) {
-            Schema::create('events', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('category_id')->nullable();
-                $table->date('start_date');
-                $table->date('end_date');
-                $table->text('descripion')->nullable();
-                $table->string('image')->nullable();
-                $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
-                $table->timestamps();
-            });
-        }
+        Schema::create('events', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->text('description');
+            $table->string('image')->nullable();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
 
-        if (!Schema::hasTable('users')) {
-            Schema::create('users', function (Blueprint $table) {
-                $table->id();
-                $table->string('username')->unique();
-                $table->string('password_hash');
-                $table->enum('role', ['admin', 'reader'])->default('reader');
-                $table->timestamps();
-            });
-        }
-
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('role')->default('reader'); // lub 'admin'
+            $table->timestamps();
+        });
     }
 
     public function down() {

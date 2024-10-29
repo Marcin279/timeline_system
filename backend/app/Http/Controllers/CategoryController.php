@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -16,7 +17,7 @@ class CategoryController extends Controller
         // Pobierz wszystkie kategorie z bazy danych
         try {
             $categories = Category::all();
-            Log::info($categories);
+            // Log::info($categories);
             // Zwróć widok z listą kategorii
             return response()->json($categories);
         } catch (\Exception $e) {
@@ -51,7 +52,7 @@ class CategoryController extends Controller
         $category = Category::create($validated);
 
         // Zwrócenie odpowiedzi JSON z nową kategorią
-        return response()->json($category, 201)
+        return response()->json($category, 201);
     }
 
     /**
