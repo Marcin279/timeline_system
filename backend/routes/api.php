@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::put('events/{id}', [EventController::class, 'update']);
 Route::delete('events/{id}', [EventController::class, 'destroy']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
+
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/test', function () {
     return response()->json(['message' => 'Server is up!']);

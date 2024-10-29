@@ -14,3 +14,50 @@ h1 {
     width: 80%;
     margin: 0 auto;
 }
+
+#login-form {
+    width: 300px; /* Szerokość formularza logowania */
+    margin: 20px auto; /* Wyśrodkowanie formularza */
+    padding: 20px;
+    background-color: #ffffff; /* Kolor tła formularza */
+    border-radius: 5px; /* Zaokrąglenie rogów formularza */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Cień dla formularza */
+}
+
+#login-form h2 {
+    text-align: center; /* Wyśrodkowanie nagłówka formularza */
+    margin-bottom: 20px; /* Odstęp poniżej nagłówka */
+}
+
+#login-form label {
+    display: block; /* Wyświetlenie etykiety jako blok */
+    margin-bottom: 5px; /* Odstęp poniżej etykiety */
+}
+
+#login-form input {
+    width: 100%; /* Pełna szerokość pola tekstowego */
+    padding: 10px; /* Padding w polu tekstowym */
+    margin-bottom: 15px; /* Odstęp poniżej pola tekstowego */
+    border: 1px solid #ccc; /* Ramka dla pola tekstowego */
+    border-radius: 5px; /* Zaokrąglenie rogów pola tekstowego */
+}
+
+#login-form button {
+    width: 100%; /* Pełna szerokość przycisku */
+    padding: 10px; /* Padding w przycisku */
+    background-color: #28a745; /* Kolor tła przycisku */
+    color: white; /* Kolor tekstu przycisku */
+    border: none; /* Bez ramki */
+    border-radius: 5px; /* Zaokrąglenie rogów przycisku */
+    cursor: pointer; /* Kursor zmienia się na wskaźnik */
+}
+
+#login-form button:hover {
+    background-color: #218838; /* Kolor tła przycisku po najechaniu */
+}
+
+#login-message {
+    text-align: center; /* Wyśrodkowanie komunikatu */
+    color: red; /* Kolor tekstu komunikatu */
+    margin-top: 10px; /* Odstęp powyżej komunikatu */
+}

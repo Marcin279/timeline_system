@@ -23,6 +23,9 @@ COPY . /var/www/html
 # Instalacja zależności Laravel
 RUN composer install
 
+# Instalacja Laravel Sanctum
+RUN composer require laravel/sanctum
+
 # Włączenie modułu mod_rewrite Apache, wymaganego przez Laravel
 RUN a2enmod rewrite
 
