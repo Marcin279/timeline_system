@@ -61,3 +61,36 @@ h1 {
     color: red; /* Kolor tekstu komunikatu */
     margin-top: 10px; /* Odstęp powyżej komunikatu */
 }
+
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+#timeline {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    padding: 10px;
+}
+
+.timeline-event {
+    background-color: #f9f9f9;
+    margin: 20px 0;
+    padding: 10px;
+    border-left: 3px solid #007bff;
+}
+
+.timeline-date {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.timeline-category {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.timeline-description {
+    margin-top: 5px;
+}

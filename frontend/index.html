@@ -7,13 +7,25 @@
     <title>Timeline System</title>
 </head>
 <body>
-    <h1>Welcome to the Timeline System</h1>
+    <header>
+        <h1>Welcome to the Timeline System</h1>
+        <!-- Przycisk logowania -->
+        <button onclick="location.href='login.html'" id="login-button">Log in</button>
+    </header>
+
     <div id="content">
         <h2>Categories:</h2>
         <ul id="category-list">
             <!-- Kategorie będą wypełniane tutaj przez JavaScript -->
         </ul>
+
+        <h2>Timeline:</h2>
+        <div id="timeline">
+            <!-- Oś czasu będzie generowana tutaj przez skrypt timeline.js -->
+        </div>
     </div>
-    <script src="app.js"></script>
+    
+    <script src="/js/app.js"></script>
+    <script src="/js/timeline.js"></script>
 </body>
 </html>

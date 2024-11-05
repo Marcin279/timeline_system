@@ -31,6 +31,7 @@ Route::delete('events/{id}', [EventController::class, 'destroy']);
 Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/test', function () {
     return response()->json(['message' => 'Server is up!']);

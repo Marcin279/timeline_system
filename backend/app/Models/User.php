@@ -13,10 +13,12 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role', // dodaj nową kolumnę
+        'first_name',  // Imię
+        'last_name',   // Nazwisko
+        'username',    // Nazwa użytkownika
+        'email',       // Email
+        'password',    // Hasło
+        'role',        // Rola użytkownika
     ];
 
     protected $hidden = [
@@ -24,4 +26,3 @@ class User extends Authenticatable
         'remember_token',
     ];
 }
-
