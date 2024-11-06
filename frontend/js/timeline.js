@@ -1,54 +1,45 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Przykładowe dane wydarzeń
     const events = [
         {
-            name: "Rozpoczęcie projektu",
-            startDate: "2023-01-10",
-            endDate: "2023-01-12",
-            description: "Początek pracy nad projektem.",
-            category: "Projekt"
+            title: "Start projektu",
+            startDate: "2024-01-01",
+            endDate: "2024-01-15",
+            description: "Projekt rozpoczęty z celem rozwoju nowej aplikacji.",
         },
         {
-            name: "Spotkanie z zespołem",
-            startDate: "2023-02-15",
-            endDate: "2023-02-15",
-            description: "Pierwsze spotkanie zespołu projektowego.",
-            category: "Spotkanie"
+            title: "Pierwsza prezentacja",
+            startDate: "2024-02-01",
+            endDate: "2024-02-03",
+            description: "Prezentacja wstępnych wyników projektu.",
         },
         {
-            name: "Prezentacja prototypu",
-            startDate: "2023-03-22",
-            endDate: "2023-03-22",
-            description: "Przedstawienie prototypu klientowi.",
-            category: "Prezentacja"
+            title: "Zakończenie etapu 1",
+            startDate: "2024-03-01",
+            endDate: "2024-03-10",
+            description: "Zakończenie pierwszego etapu prac nad projektem.",
         }
     ];
 
-    const timeline = document.getElementById('timeline');
+    const timeline = document.querySelector('.timeline');
 
-    events.forEach(event => {
+    events.forEach((event) => {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('timeline-event');
 
-        const nameElement = document.createElement('h3');
-        nameElement.textContent = event.name;
+        eventDiv.innerHTML = `
+            <div class="dot"></div>
+            <div class="content">
+                <div class="date">${event.startDate} - ${event.endDate}</div>
+                <div class="title">${event.title}</div>
+                <div class="description">${event.description}</div>
+            </div>
+        `;
 
-        const dateElement = document.createElement('p');
-        dateElement.classList.add('timeline-date');
-        dateElement.textContent = `${event.startDate} - ${event.endDate}`;
-
-        const categoryElement = document.createElement('p');
-        categoryElement.classList.add('timeline-category');
-        categoryElement.textContent = `Kategoria: ${event.category}`;
-
-        const descriptionElement = document.createElement('p');
-        descriptionElement.classList.add('timeline-description');
-        descriptionElement.textContent = event.description;
-
-        eventDiv.appendChild(nameElement);
-        eventDiv.appendChild(dateElement);
-        eventDiv.appendChild(categoryElement);
-        eventDiv.appendChild(descriptionElement);
+        eventDiv.addEventListener('click', () => {
+            // Zamknij inne otwarte sekcje
+            document.querySelectorAll('.timeline-event').forEach(el => el.classList.remove('active'));
+            eventDiv.classList.toggle('active');
+        });
 
         timeline.appendChild(eventDiv);
     });

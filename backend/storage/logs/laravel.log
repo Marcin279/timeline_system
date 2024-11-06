@@ -146,3 +146,8 @@
 #33 /var/www/html/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #34 {main}
 "} 
+[2024-11-05 20:35:29] local.INFO: Attempting login  
+[2024-11-05 20:40:08] local.INFO: Attempting login {"email":"marcin.biela12@gmail.com","password":"ziziorek"} 
+[2024-11-05 20:40:09] local.INFO: Login successful {"user":{"App\\Models\\User":{"id":11,"first_name":"Marcin","last_name":"Biela","username":"mbiela","email":"marcin.biela12@gmail.com","role":"reader","created_at":"2024-11-05T00:20:59.000000Z","updated_at":"2024-11-05T00:20:59.000000Z"}}} 
+[2024-11-05 21:05:24] local.INFO: Attempting login {"email":"marcin.biela12@gmail.com","password":"ziziorek"} 
+[2024-11-05 21:05:25] local.INFO: Login successful {"user":{"App\\Models\\User":{"id":11,"first_name":"Marcin","last_name":"Biela","username":"mbiela","email":"marcin.biela12@gmail.com","role":"reader","created_at":"2024-11-05T00:20:59.000000Z","updated_at":"2024-11-05T00:20:59.000000Z"}}} 

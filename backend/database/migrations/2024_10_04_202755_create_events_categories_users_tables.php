@@ -42,7 +42,7 @@ class CreateEventsCategoriesUsersTables extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role')->default('reader'); // lub 'admin'
+            $table->string('role')->default('user'); // lub 'admin'
             $table->rememberToken();
             $table->timestamps();
         });
