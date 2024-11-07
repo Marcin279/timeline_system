@@ -1,4 +1,4 @@
-@import https://fonts.googleapis.com/css?family=Montserrat:300&subset=latin-ext;
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300&subset=latin-ext');
 
 *, *:after, *:before {
   -webkit-box-sizing: border-box;
@@ -20,7 +20,8 @@ ol, ul {
 }
 
 img {
-  max-width: 100%;
+  max-width: 100%; /* Upewnia się, że obrazek nie przekroczy szerokości kontenera */
+  height: auto; /* Utrzymuje proporcje obrazka */
 }
 
 h1, h2 {
@@ -129,6 +130,7 @@ h1, h2 {
   border-radius: 0.25em;
   padding: 1em;
   box-shadow: 0 2px 7px rgba(0,0,0,.15);
+  overflow: hidden; /* Upewniamy się, że nic nie wychodzi poza kontener */
 }
 .timeline-content:after {
   content: "";
@@ -160,6 +162,7 @@ h1, h2 {
   border: 7px solid transparent;
   border-right: 7px solid white;
 }
+
 @media only screen and (min-width: 768px) {
   .timeline-content h2 {
     font-size: 20px;
@@ -192,4 +195,19 @@ h1, h2 {
     border-color: transparent;
     border-right-color: white;
   }
+}
+
+/* Poprawki dla obrazków w timeline-content */
+.timeline-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.additional-info img {
+  max-width: 100%; /* Zapewnia, że obrazek nie przekroczy szerokości kontenera */
+  height: auto; /* Utrzymuje proporcje obrazka */
+  border-radius: 5px; /* Zaokrąglenie rogów */
+  margin-top: 10px; /* Dodatkowa przestrzeń nad obrazkiem */
 }

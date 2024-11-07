@@ -58,23 +58,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const timelineContent = document.createElement('div');
         timelineContent.classList.add('timeline-content');
 
+        // Tworzymy tylko tytuł na początku
         const title = document.createElement('h2');
         title.innerText = event.title;
-        const description = document.createElement('p');
-        description.innerText = event.description;
 
+        // Tworzymy dodatkowe informacje, które będą ukryte
         const additionalInfo = document.createElement('div');
         additionalInfo.classList.add('additional-info');
         additionalInfo.innerHTML = `
             <div class="time-frame">${event.startDate} - ${event.endDate}</div>
             <div class="category">${event.category}</div>
             <img src="${event.image}" alt="${event.title}">
+            <p>${event.description}</p>
         `;
-        additionalInfo.style.display = 'none'; // Ukrywamy dodatkowe informacje początkowo
+        additionalInfo.style.display = 'none'; // Ukrywamy szczegóły początkowo
 
-        // Dodajemy elementy do zawartości
+        // Dodajemy tytuł i ukryte informacje do zawartości
         timelineContent.appendChild(title);
-        timelineContent.appendChild(description);
         timelineContent.appendChild(additionalInfo);
         
         // Dodajemy zawartość do bloku wydarzenia
