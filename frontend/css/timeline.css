@@ -70,17 +70,21 @@ h1, h2 {
 .timeline-block {
   position: relative;
   margin: 2em 0;
+  will-change: transform;
 }
 .timeline-block:after {
   content: "";
   display: table;
   clear: both;
+  will-change: transform;
 }
 .timeline-block:first-child {
   margin-top: 0;
+  will-change: transform;
 }
 .timeline-block:last-child {
   margin-bottom: 0;
+  will-change: transform;
 }
 @media only screen and (min-width: 1170px) {
   .timeline-block {

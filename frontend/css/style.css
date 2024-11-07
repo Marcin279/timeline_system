@@ -1,17 +1,48 @@
-/* style.css */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
+/* Stylizacja nagłówka */
+header {
+    display: flex;
+    justify-content: space-between; /* Rozmieszcza elementy po całej szerokości */
+    align-items: center;
+    width: 100%; /* Upewniamy się, że nagłówek zajmuje całą szerokość */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative; /* Umożliwia prawidłowe rozmieszczenie elementów wewnątrz */
 }
 
-h1 {
-    text-align: center;
-    margin-top: 50px;
+/* Przyciski logowania i rejestracji */
+#auth-buttons {
+    display: flex;
+    gap: 10px; /* Odstęp między przyciskami */
+    position: absolute; /* Pozycjonuje elementy względem rodzica (nagłówka) */
+    top: 50%; /* Wyrównanie w pionie */
+    right: 20px; /* Wyrównanie do prawej */
+    transform: translateY(-50%); /* Wyrównanie do środka w pionie */
+}
+
+#auth-buttons button {
+    background-color: #56A2DB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#auth-buttons button:hover {
+    background-color: #467aaf;
+}
+
+/* Reszta stylów */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
 }
 
 #content {
-    width: 80%;
-    margin: 0 auto;
+    padding: 20px;
 }
