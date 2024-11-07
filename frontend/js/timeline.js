@@ -23,52 +23,73 @@ document.addEventListener("DOMContentLoaded", () => {
             description: "Zakończenie pierwszego etapu prac nad projektem.",
             image: "https://via.placeholder.com/100",
             category: "Etap",
+        },
+        {
+            title: "Zakończenie etapu 2",
+            startDate: "2024-04-01",
+            endDate: "2024-06-10",
+            description: "Zakończenie pierwszego etapu 2 prac nad projektem.",
+            image: "https://via.placeholder.com/100",
+            category: "Etap",
+        },
+        {
+            title: "Zakończenie etapu 3",
+            startDate: "2024-04-01",
+            endDate: "2024-06-10",
+            description: "Zakończenie pierwszego etapu 3 prac nad projektem.",
+            image: "https://via.placeholder.com/100",
+            category: "Etap",
         }
     ];
 
-    const timeline = document.querySelector('.timeline');
+    const timeline = document.querySelector('#timeline');
 
-    // Dodajemy linię osi
-    const line = document.createElement('div');
-    line.classList.add('line');
-    timeline.appendChild(line);
-
-    // Dodajemy segmenty linii (odcinki) między wydarzeniami
     events.forEach((event, index) => {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('dot-container');
+        // Tworzymy blok wydarzenia
+        const eventBlock = document.createElement('div');
+        eventBlock.classList.add('timeline-block');
 
-        const dot = document.createElement('div');
-        dot.classList.add('dot');
+        // Dodajemy okrąg oznaczający wydarzenie
+        const timelineImg = document.createElement('div');
+        timelineImg.classList.add('timeline-img');
+        eventBlock.appendChild(timelineImg);
 
-        const title = document.createElement('div');
-        title.classList.add('title');
+        // Tworzymy zawartość wydarzenia
+        const timelineContent = document.createElement('div');
+        timelineContent.classList.add('timeline-content');
+
+        const title = document.createElement('h2');
         title.innerText = event.title;
+        const description = document.createElement('p');
+        description.innerText = event.description;
 
-        const eventInfo = document.createElement('div');
-        eventInfo.classList.add('event-info');
-        eventInfo.innerHTML = `
-            <div class="title">${event.title}</div>
+        const additionalInfo = document.createElement('div');
+        additionalInfo.classList.add('additional-info');
+        additionalInfo.innerHTML = `
             <div class="time-frame">${event.startDate} - ${event.endDate}</div>
-            <div class="description">${event.description}</div>
-            <img src="${event.image}" alt="${event.title}">
             <div class="category">${event.category}</div>
+            <img src="${event.image}" alt="${event.title}">
         `;
+        additionalInfo.style.display = 'none'; // Ukrywamy dodatkowe informacje początkowo
 
-        eventDiv.appendChild(dot);
-        eventDiv.appendChild(title);
-        eventDiv.appendChild(eventInfo);
+        // Dodajemy elementy do zawartości
+        timelineContent.appendChild(title);
+        timelineContent.appendChild(description);
+        timelineContent.appendChild(additionalInfo);
+        
+        // Dodajemy zawartość do bloku wydarzenia
+        eventBlock.appendChild(timelineContent);
 
-        // Pozycja wydarzenia na osi czasu (prosty sposób: 150px między wydarzeniami)
-        eventDiv.style.position = 'relative';
-        eventDiv.style.marginTop = `${index * 150}px`;
+        // Dodajemy blok wydarzenia do sekcji timeline
+        timeline.appendChild(eventBlock);
 
-        timeline.appendChild(eventDiv);
+        // Funkcjonalność pokazywania szczegółów po najechaniu
+        title.addEventListener('mouseover', () => {
+            additionalInfo.style.display = 'block'; // Pokazujemy szczegóły
+        });
 
-        // Długość segmentu linii (wydarzenia)
-        const segment = document.createElement('div');
-        segment.classList.add('segment');
-        segment.style.top = `${index * 150 + 20}px`; // Wysokość kropki + margines
-        line.appendChild(segment);
+        title.addEventListener('mouseout', () => {
+            additionalInfo.style.display = 'none'; // Ukrywamy szczegóły
+        });
     });
 });

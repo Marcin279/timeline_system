@@ -1,140 +1,195 @@
-body, html {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+@import https://fonts.googleapis.com/css?family=Montserrat:300&subset=latin-ext;
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.timeline-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px;
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .85em;
+  color: #888;
+  background-color: #f5f5f5;
 }
 
-h2 {
-    text-align: center;
-    color: #333;
+ol, ul {
+  list-style: none;
 }
 
-.timeline {
-    position: relative;
+img {
+  max-width: 100%;
+}
+
+h1, h2 {
+  font-weight: 600;
+}
+
+/* Docelowe style timeline */
+
+.container {
+  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto;
+}
+.container::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+#timeline {
+  position: relative;
+  padding: 2em 0;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+#timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 18px;
+  height: 100%;
+  width: 4px;
+  background: rgba(0,0,0,.15);
+}
+@media only screen and (min-width: 1170px) {
+  #timeline {
+    margin-top: 3em;
+    margin-bottom: 3em;
+  }
+  #timeline::before {
+    left: 50%;
+    margin-left: -2px;
+  }
+}
+
+.timeline-block {
+  position: relative;
+  margin: 2em 0;
+}
+.timeline-block:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.timeline-block:first-child {
+  margin-top: 0;
+}
+.timeline-block:last-child {
+  margin-bottom: 0;
+}
+@media only screen and (min-width: 1170px) {
+  .timeline-block {
+    margin: 4em 0;
+  }
+  .timeline-block:first-child {
+    margin-top: 0;
+  }
+  .timeline-block:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.timeline-img {
+  background: #56A2DB;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+@media only screen and (max-width: 1170px) {
+  .timeline-img {
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+}
+@media only screen and (min-width: 1170px) {
+  .timeline-img {
+    width: 20px;
+    height: 20px;
+    left: 50%;
+    margin-left: -10px;
     margin-top: 20px;
-    display: flex;
-    flex-direction: column;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
 }
 
-/* Kropka (punkt na osi czasu) */
-.dot-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-    position: relative;
+.timeline-content {
+  position: relative;
+  margin-left: 60px;
+  background: white;
+  border-radius: 0.25em;
+  padding: 1em;
+  box-shadow: 0 2px 7px rgba(0,0,0,.15);
 }
-
-/* Kropka w osi czasu */
-.dot {
-    width: 25px;
-    height: 25px;
-    background-color: #1E90FF;
-    border-radius: 50%;
-    margin-right: 15px;
-    position: relative;
-    cursor: pointer;
+.timeline-content:after {
+  content: "";
+  display: table;
+  clear: both;
 }
-
-/* Tytuł wydarzenia */
-.title {
+.timeline-content h2 {
+  color: #303e49;
+}
+.timeline-content p, .timeline-content {
+  font-size: 12px;
+  font-size: 0.7125rem;
+}
+.timeline-content .timeline-content {
+  display: inline-block;
+}
+.timeline-content p {
+  font-weight: 300;
+  margin: 1em 0;
+  line-height: 1.6;
+}
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 100%;
+  height: 0;
+  width: 0;
+  border: 7px solid transparent;
+  border-right: 7px solid white;
+}
+@media only screen and (min-width: 768px) {
+  .timeline-content h2 {
+    font-size: 20px;
+    font-size: 1.25rem;
+  }
+  .timeline-content p {
     font-size: 16px;
-    font-weight: bold;
-    color: #0288d1;
-    cursor: pointer;
+    font-size: .9rem;
+  }
 }
-
-/* Okno z informacjami o wydarzeniu */
-.event-info {
-    display: none;
-    position: absolute;
-    left: 120%; /* Przesunięcie okna na prawo od kropki */
-    top: 0;
-    background-color: white;
-    border: 1px solid #0288d1;
-    padding: 15px;
-    width: 300px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-/* Tytuł okna z informacjami */
-.event-info .title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #0288d1;
-    margin-bottom: 10px;
-}
-
-/* Czas trwania wydarzenia */
-.event-info .time-frame {
-    font-size: 14px;
-    color: #555;
-}
-
-/* Opis wydarzenia */
-.event-info .description {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #333;
-}
-
-/* Obrazek wydarzenia */
-.event-info img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    display: block;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-/* Kategoria wydarzenia */
-.event-info .category {
-    font-size: 12px;
-    color: #888;
-    margin-top: 10px;
-}
-
-/* Wyświetlanie okna po najechaniu na tytuł */
-.dot-container:hover .event-info,
-.title:hover + .event-info {
-    display: block;
-    opacity: 1;
-}
-
-/* Stylizacja linii osi - tylko przy kropkach
-.timeline .line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    height: 100%;
-    width: 2px;
-    background-color: #0288d1;
-    transform: translateX(-50%);
-    z-index: 1;
-} */
-
-/* Linii osi dla poszczególnych wydarzeń */
-.timeline .line .segment {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    height: 100%;
-    width: 5px;
-    background-color: #DC143C;
-    /* transform: translateX(-50%); */
-    transform: translateX(-50%) translateX(-102px);
+@media only screen and (min-width: 1170px) {
+  .timeline-content {
+    margin-left: 0;
+    padding: 1.6em;
+    width: 45%;
+  }
+  .timeline-content::before {
+    top: 24px;
+    left: 100%;
+    border-color: transparent;
+    border-left-color: white;
+  }
+  .timeline-block:nth-child(even) .timeline-content {
+    float: right;
+  }
+  .timeline-block:nth-child(even) .timeline-content::before {
+    top: 24px;
+    left: auto;
+    right: 100%;
+    border-color: transparent;
+    border-right-color: white;
+  }
 }
