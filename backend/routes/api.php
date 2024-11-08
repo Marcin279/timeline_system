@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
 // Routing dla Event Controller
 Route::get('events', [EventController::class, 'index']);
 Route::post('events', [EventController::class, 'store']);

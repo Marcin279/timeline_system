@@ -32,3 +32,36 @@ document.addEventListener("DOMContentLoaded", () => {
   // Wywołanie funkcji do załadowania kategorii
   loadCategories();
 });
+
+
+document.getElementById('logout-button').addEventListener('click', async () => {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+      console.log('Nie znaleziono tokena – użytkownik już wylogowany.');
+      return;
+  }
+
+  try {
+      const response = await fetch('http://localhost:8081/api/logout', {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          }
+      });
+
+      if (response.ok) {
+          console.log('Wylogowano pomyślnie');
+          // Usuń token i rolę z localStorage
+          localStorage.removeItem('token');
+          localStorage.removeItem('userRole');
+          // Przekieruj na stronę logowania lub odśwież stronę
+          window.location.href = 'login.html';
+      } else {
+          console.error('Błąd podczas wylogowywania:', response.statusText);
+      }
+  } catch (error) {
+      console.error('Błąd:', error);
+  }
+});

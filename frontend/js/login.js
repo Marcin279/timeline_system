@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
             email: email,
             password: password
         };
-        console.log('Wysyłam zapytanie do API...');
         try {
             // Wyślij zapytanie do backendu
             console.log('Wysyłam zapytanie do API...');

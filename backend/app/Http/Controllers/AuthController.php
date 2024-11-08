@@ -78,4 +78,13 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Rejestracja zakończona sukcesem'], 201);
     }
+
+    public function logout(Request $request)
+    {
+        // Usunięcie tokenu autoryzacyjnego użytkownika
+        $request->user()->currentAccessToken()->delete();
+
+        // Zwrócenie odpowiedzi
+        return response()->json(['message' => 'Logout successful'], 200);
+    }
 }
