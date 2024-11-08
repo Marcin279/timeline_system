@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('admin')->only(['store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      * GET /categories
@@ -17,7 +23,7 @@ class CategoryController extends Controller
         // Pobierz wszystkie kategorie z bazy danych
         try {
             $categories = Category::all();
-            // Log::info($categories);
+            Log::info($categories);
             // Zwróć widok z listą kategorii
             return response()->json($categories);
         } catch (\Exception $e) {

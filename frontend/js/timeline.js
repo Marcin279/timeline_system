@@ -1,95 +1,108 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const events = [
-        {
-            title: "Start projektu",
-            startDate: "2024-01-01",
-            endDate: "2024-01-15",
-            description: "Projekt rozpoczęty z celem rozwoju nowej aplikacji.",
-            image: "https://via.placeholder.com/100",
-            category: "Projekt",
-        },
-        {
-            title: "Pierwsza prezentacja",
-            startDate: "2024-02-01",
-            endDate: "2024-02-03",
-            description: "Prezentacja wstępnych wyników projektu.",
-            image: "https://via.placeholder.com/100",
-            category: "Prezentacja",
-        },
-        {
-            title: "Zakończenie etapu 1",
-            startDate: "2024-03-01",
-            endDate: "2024-03-10",
-            description: "Zakończenie pierwszego etapu prac nad projektem.",
-            image: "https://via.placeholder.com/100",
-            category: "Etap",
-        },
-        {
-            title: "Zakończenie etapu 2",
-            startDate: "2024-04-01",
-            endDate: "2024-06-10",
-            description: "Zakończenie pierwszego etapu 2 prac nad projektem.",
-            image: "https://via.placeholder.com/100",
-            category: "Etap",
-        },
-        {
-            title: "Zakończenie etapu 3",
-            startDate: "2024-04-01",
-            endDate: "2024-06-10",
-            description: "Zakończenie pierwszego etapu 3 prac nad projektem.",
-            image: "https://via.placeholder.com/100",
-            category: "Etap",
-        }
-    ];
-
-    const timeline = document.querySelector('#timeline');
-
-    events.forEach((event, index) => {
-        // Tworzymy blok wydarzenia
-        const eventBlock = document.createElement('div');
-        eventBlock.classList.add('timeline-block');
-
-        // Dodajemy okrąg oznaczający wydarzenie
-        const timelineImg = document.createElement('div');
-        timelineImg.classList.add('timeline-img');
-        eventBlock.appendChild(timelineImg);
-
-        // Tworzymy zawartość wydarzenia
-        const timelineContent = document.createElement('div');
-        timelineContent.classList.add('timeline-content');
-
-        // Tworzymy tylko tytuł na początku
-        const title = document.createElement('h2');
-        title.innerText = event.title;
-
-        // Tworzymy dodatkowe informacje, które będą ukryte
-        const additionalInfo = document.createElement('div');
-        additionalInfo.classList.add('additional-info');
-        additionalInfo.innerHTML = `
-            <div class="time-frame">${event.startDate} - ${event.endDate}</div>
-            <div class="category">${event.category}</div>
-            <img src="${event.image}" alt="${event.title}">
-            <p>${event.description}</p>
-        `;
-        additionalInfo.style.display = 'none'; // Ukrywamy szczegóły początkowo
-
-        // Dodajemy tytuł i ukryte informacje do zawartości
-        timelineContent.appendChild(title);
-        timelineContent.appendChild(additionalInfo);
-        
-        // Dodajemy zawartość do bloku wydarzenia
-        eventBlock.appendChild(timelineContent);
-
-        // Dodajemy blok wydarzenia do sekcji timeline
-        timeline.appendChild(eventBlock);
-
-        // Funkcjonalność pokazywania szczegółów po najechaniu
-        title.addEventListener('mouseover', () => {
-            additionalInfo.style.display = 'block'; // Pokazujemy szczegóły
-        });
-
-        title.addEventListener('mouseout', () => {
-            additionalInfo.style.display = 'none'; // Ukrywamy szczegóły
-        });
-    });
+    loadEvents();
 });
+
+const isAdmin = true; // Zmienna kontrolująca, czy użytkownik jest administratorem
+
+function loadEvents() {
+    fetch('http://localhost:8081/api/events')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(events => {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = ''; // Czyszczenie zawartości
+
+            events.forEach((event, index) => {
+                const eventBlock = document.createElement('div');
+                eventBlock.classList.add('timeline-block');
+
+                const timelineImg = document.createElement('div');
+                timelineImg.classList.add('timeline-img');
+                eventBlock.appendChild(timelineImg);
+
+                const timelineContent = document.createElement('div');
+                timelineContent.classList.add('timeline-content');
+
+                const title = document.createElement('h2');
+                title.innerText = event.title;
+
+                const additionalInfo = document.createElement('div');
+                additionalInfo.classList.add('additional-info');
+
+                // Formatowanie daty bez godziny
+                const startDateFormatted = formatDate(event.start_date);
+                const endDateFormatted = formatDate(event.end_date);
+
+                // Domyślny obraz, jeśli brak obrazu
+                const imageUrl = event.image || 'https://via.placeholder.com/100';
+
+                additionalInfo.innerHTML = `
+                    <div class="time-frame">${startDateFormatted} - ${endDateFormatted}</div>
+                    <div class="category">${event.category.name}</div>
+                    <img src="${imageUrl}" alt="${event.title}">
+                    <p>${event.description}</p>
+                `;
+                additionalInfo.style.display = 'none';
+
+                timelineContent.appendChild(title);
+                timelineContent.appendChild(additionalInfo);
+
+                // Dodaj przyciski edycji i usuwania, jeśli użytkownik jest administratorem
+                if (isAdmin) {
+                    const editButton = document.createElement('button');
+                    editButton.innerText = "Edytuj wydarzenie";
+                    editButton.classList.add('edit-button');
+                    editButton.onclick = () => editEvent(index);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerText = "Usuń wydarzenie";
+                    deleteButton.classList.add('delete-button');
+                    deleteButton.onclick = () => deleteEvent(index);
+
+                    timelineContent.appendChild(editButton);
+                    timelineContent.appendChild(deleteButton);
+                }
+
+                eventBlock.appendChild(timelineContent);
+                timeline.appendChild(eventBlock);
+
+                title.addEventListener('click', () => {
+                    additionalInfo.style.display = additionalInfo.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        })
+        .catch(error => console.error('Błąd podczas pobierania wydarzeń:', error));
+}
+
+// Funkcja do formatowania daty (usunięcie godziny)
+function formatDate(dateString) {
+    if (!dateString) {
+        console.error("Brak daty:", dateString);
+        return ''; // Możesz zwrócić pusty ciąg lub dowolną domyślną wartość
+    }
+
+    const date = new Date(dateString); // Tworzymy obiekt Date
+
+    if (isNaN(date.getTime())) {
+        console.error("Błędna data:", dateString);
+        return ''; // Jeśli data jest błędna, zwróć pusty ciąg
+    }
+
+    return date.toLocaleDateString('pl-PL'); // Format daty w polskim stylu (DD.MM.YYYY)
+}
+
+// Funkcja edycji wydarzenia
+function editEvent(index) {
+    alert(`Edytowanie wydarzenia o indeksie: ${index}`);
+    // Tu można dodać rzeczywistą logikę edycji, np. otwieranie formularza edycji
+}
+
+// Funkcja usuwania wydarzenia
+function deleteEvent(index) {
+    alert(`Usuwanie wydarzenia o indeksie: ${index}`);
+    // Tu można dodać rzeczywistą logikę usuwania, np. wywołanie API do usunięcia wydarzenia
+}

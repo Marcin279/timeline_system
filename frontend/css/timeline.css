@@ -215,3 +215,27 @@ h1, h2 {
   border-radius: 5px; /* Zaokrąglenie rogów */
   margin-top: 10px; /* Dodatkowa przestrzeń nad obrazkiem */
 }
+
+.edit-button, .delete-button {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 5px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #4CAF50; /* Zielony kolor dla edytowania */
+}
+
+.delete-button {
+    background-color: #f44336; /* Czerwony kolor dla usuwania */
+}
+
+.edit-button:hover, .delete-button:hover {
+    opacity: 0.8;
+}

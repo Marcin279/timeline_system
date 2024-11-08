@@ -73,7 +73,7 @@ input[type="password"]:focus {
 .submit-button {
     width: 100%;
     padding: 12px;
-    background-color: #3b82f6;
+    background-color: #28a745;
     color: #ffffff;
     font-size: 16px;
     font-weight: bold;
@@ -85,11 +85,11 @@ input[type="password"]:focus {
 }
 
 .submit-button:hover {
-    background-color: #2563eb;
+    background-color: #218838;
     box-shadow: 0px 6px 14px rgba(59, 130, 246, 0.3);
 }
 
 .submit-button:active {
-    background-color: #1d4ed8;
+    background-color: #218838;
     transform: scale(0.98);
 }
