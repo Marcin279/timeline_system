@@ -2,9 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
 });
 
-const isAdmin = true; // Zmienna kontrolująca, czy użytkownik jest administratorem
-
 function loadEvents() {
+    const isAdmin = localStorage.getItem('userRole') === 'admin';  // Sprawdzamy rolę z localStorage
+
+    console.log('User role:', localStorage.getItem('userRole'));
+
     fetch('http://localhost:8081/api/events')
         .then(response => {
             if (!response.ok) {
@@ -77,6 +79,7 @@ function loadEvents() {
         })
         .catch(error => console.error('Błąd podczas pobierania wydarzeń:', error));
 }
+
 
 // Funkcja do formatowania daty (usunięcie godziny)
 function formatDate(dateString) {
