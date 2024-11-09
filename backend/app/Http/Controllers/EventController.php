@@ -40,14 +40,17 @@ class EventController extends Controller
             'image' => 'nullable|image',
             'category_id' => 'required|exists:categories,id',
         ]);
-
+    
+        \Log::info('Attempting login', $validated);
+    
         $event = Event::create($validated);
-
+    
         return response()->json([
             'message' => 'Wydarzenie dodane pomyślnie.',
             'event' => $event,
-        ], 201); // Zwracamy status 201 Created
+        ], 201);
     }
+    
 
     /**
      * Display the specified resource.

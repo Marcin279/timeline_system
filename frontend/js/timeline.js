@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
+    if (isAdminUser()) {
+        showAddEventForm(); 
+        setupAddEventForm();
+    }
 });
 
 function loadEvents() {
@@ -120,4 +124,92 @@ function editEvent(index) {
 function deleteEvent(index) {
     alert(`Usuwanie wydarzenia o indeksie: ${index}`);
     // Tu można dodać rzeczywistą logikę usuwania, np. wywołanie API do usunięcia wydarzenia
+}
+
+// Funkcja do sprawdzenia, czy użytkownik jest administratorem
+function isAdminUser() {
+    const token = localStorage.getItem('token');
+    const userRole = localStorage.getItem('userRole');
+    return token && userRole === 'admin';
+}
+
+// Funkcja do wyświetlania formularza dodawania nowego wydarzenia
+function showAddEventForm() {
+    const addEventFormHTML = `
+        <form id="add-event-form">
+            <h3>Dodaj nowe wydarzenie</h3>
+            <input type="text" id="title" placeholder="Tytuł" required>
+            <input type="date" id="start-date" required>
+            <input type="date" id="end-date" required>
+            <textarea id="description" placeholder="Opis" required></textarea>
+            <input type="url" id="image" placeholder="Link do obrazu">
+            <select id="category" required></select>
+            <button type="submit">Dodaj wydarzenie</button>
+        </form>
+    `;
+    document.getElementById('timeline').insertAdjacentHTML('beforebegin', addEventFormHTML);
+    loadCategories();
+}
+
+// Funkcja do wczytywania kategorii
+function loadCategories() {
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:8081/api/categories', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => response.json())
+    .then(categories => {
+        const categorySelect = document.getElementById('category');
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Błąd podczas ładowania kategorii:', error));
+}
+
+// Funkcja obsługująca przesyłanie formularza dodawania wydarzeń
+function setupAddEventForm() {
+    const addEventForm = document.getElementById('add-event-form');
+    addEventForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const newEventData = {
+            title: document.getElementById('title').value,
+            start_date: document.getElementById('start-date').value,
+            end_date: document.getElementById('end-date').value,
+            description: document.getElementById('description').value,
+            image: document.getElementById('image').value,
+            category_id: document.getElementById('category').value
+        };
+
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:8081/api/events', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(newEventData)
+            });
+
+            if (response.ok) {
+                alert('Wydarzenie dodane pomyślnie!');
+                loadEvents();
+            } else {
+                console.error('Błąd dodawania wydarzenia:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Błąd:', error);
+        }
+    });
 }

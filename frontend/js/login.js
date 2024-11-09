@@ -41,10 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log('Rola użytkownika:', localStorage.getItem('userRole'));
 
                 // Przekieruj użytkownika na stronę główną
-                setTimeout(() => {
-                    console.log('Role before redirect:', localStorage.getItem('userRole'));
-                    window.location.href = 'index.html';
-                }, 10000);
+                console.log('Role before redirect:', localStorage.getItem('userRole')); // Debug
+                window.location.href = 'index.html';
                 
             } else {
                 const error = await response.json();
