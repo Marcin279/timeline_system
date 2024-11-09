@@ -19,3 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource('categories', CategoryController::class);
+
+Route::get('/login', function () {
+    return response()->json(['message' => 'Please login']);
+})->name('login');

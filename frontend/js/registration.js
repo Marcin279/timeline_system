@@ -25,9 +25,11 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data.token) {
             // Jeśli rejestracja powiodła się
             alert(data.message); // Możesz przekierować lub wykonać inną akcję tutaj
+            localStorage.setItem('token', data.token);
+            window.location.href = 'index.html';
         } else {
             // Jeśli wystąpiły błędy
             alert(data.message); // Pokaż komunikat o błędzie
@@ -35,5 +37,6 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     })
     .catch(error => {
         console.error('Błąd:', error); // Zaloguj wszelkie błędy do debugowania
+        alert('Wystąpił błąd. Spróbuj ponownie później.');
     });
 });

@@ -73,18 +73,35 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'remember_token' => Str::random(10),
+            'remember_token' => null,
         ]);
+        
+        // Generowanie Personal Access Token
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['message' => 'Rejestracja zakończona sukcesem'], 201);
+        return response()->json([
+            'message' => 'Rejestracja zakończona sukcesem',
+            'token' => $token,  // Zwracamy token w odpowiedzi
+        ], 201);
     }
 
     public function logout(Request $request)
     {
-        // Usunięcie tokenu autoryzacyjnego użytkownika
-        $request->user()->currentAccessToken()->delete();
-
-        // Zwrócenie odpowiedzi
-        return response()->json(['message' => 'Logout successful'], 200);
+        $user = $request->user();
+        
+        if (!$user) {
+            \Log::error('Brak zalogowanego użytkownika.');
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    
+        \Log::info('Wylogowanie użytkownika: ' . $user->id);
+    
+        $user->currentAccessToken()->delete(); // Usuń aktywny token
+    
+        $cookie = \Cookie::forget('remembered_token'); // Usunięcie tokenu z ciasteczek
+    
+        return response()->json(['message' => 'Logout successful'])->withCookie($cookie);
     }
+    
+
 }
