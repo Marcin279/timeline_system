@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Zapisz token i dane użytkownika w localStorage
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('userRole', result.user.role);  // Zapisz rolę użytkownika
+                localStorage.setItem('userName', result.user.username);  // Zapisz nazwę użytkownika
 
                 // Sprawdzamy, czy użytkownik jest administratorem
                 const isAdmin = result.user.role === 'admin';

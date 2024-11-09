@@ -10,7 +10,7 @@ header {
     position: relative; /* Umożliwia prawidłowe rozmieszczenie elementów wewnątrz */
 }
 
-/* Przyciski logowania i rejestracji */
+/* Przyciski logowania, rejestracji i wylogowania */
 #auth-buttons {
     display: flex;
     gap: 10px; /* Odstęp między przyciskami */
@@ -33,6 +33,16 @@ header {
 
 #auth-buttons button:hover {
     background-color: #467aaf;
+}
+
+/* Stylizacja komunikatu statusu */
+#user-status {
+    margin-top: 25px; /* Odstęp od przycisków */
+    color: red; /* Kolor tekstu statusu */
+    text-align: center; /* Wyrównanie do środka */
+    font-size: 14px; /* Rozmiar czcionki */
+    position: relative; /* Umożliwia poprawne pozycjonowanie względem nagłówka */
+    top: 20px; /* Dodatkowy odstęp w pionie od przycisków */
 }
 
 /* Reszta stylów */

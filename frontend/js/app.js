@@ -31,6 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Wywołanie funkcji do załadowania kategorii
   loadCategories();
+
+  const userStatusElement = document.getElementById('user-status');
+  const token = localStorage.getItem('token');
+  const userRole = localStorage.getItem('userRole');
+  const userName = localStorage.getItem('userName');
+
+  if (token) {
+    userStatusElement.textContent = `Zalogowany jako: ${userName || 'Niezidentyfikowany użytkownik'}`;
+    console.log('status: ', userStatusElement.textContent);
+  } else {
+    userStatusElement.textContent = 'Użytkownik niezalogowany';
+  }
+
   const logoutButton = document.getElementById('logout-button');
   // Sprawdzenie czy przycisk wylogowania istnieje w DOM
   // const logoutButton = document.getElementById('logout-button');
@@ -57,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
               // Usuń token i rolę z localStorage
               localStorage.removeItem('token');
               localStorage.removeItem('userRole');
+              localStorage.removeItem('userName');
               // Opcjonalnie: odśwież stronę lub przekieruj użytkownika
               window.location.reload(); // Jeśli chcesz odświeżyć stronę po wylogowaniu
           } else {
