@@ -1,8 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
+
     if (isAdminUser()) {
-        showAddEventForm(); 
+        // Pokaż przycisk tylko dla administratorów
+        document.getElementById('show-add-event').style.display = 'block';
     }
+    
+    // Pokazanie formularza po kliknięciu
+    document.getElementById('show-add-event').addEventListener('click', () => {
+        showAddEventForm();
+    });
 });
 
 function loadEvents() {
@@ -133,22 +140,24 @@ function isAdminUser() {
 }
 // Funkcja do wyświetlania formularza dodawania nowego wydarzenia
 function showAddEventForm() {
-    // Dodaj formularz do strony
-    const addEventFormHTML = `
-        <form id="add-event-form">
-            <h3>Dodaj nowe wydarzenie</h3>
-            <input type="text" id="title" placeholder="Tytuł" required>
-            <input type="date" id="start-date" required>
-            <input type="date" id="end-date" required>
-            <textarea id="description" placeholder="Opis" required></textarea>
-            <input type="url" id="image" placeholder="Link do obrazu">
-            <select id="category" required></select>
-            <button type="submit">Dodaj wydarzenie</button>
-        </form>
-    `;
-    document.getElementById('timeline').insertAdjacentHTML('beforebegin', addEventFormHTML);
-    loadCategories();
-    setupAddEventForm(); // Uruchamiamy obsługę formularza po jego wyświetleniu
+    const addEventContainer = document.getElementById('add-event-container');
+    const addEventButton = document.getElementById('show-add-event');
+
+    // Upewnij się, że formularz jest widoczny po kliknięciu przycisku
+    addEventContainer.style.display = 'block';  // Pokazujemy formularz
+    addEventButton.style.display = 'none';  // Ukrywamy przycisk
+
+    loadCategories();  // Ładujemy kategorie, żeby formularz był gotowy do użycia
+    setupAddEventForm();  // Inicjalizujemy obsługę formularza
+}
+
+function hideAddEventForm() {
+    const addEventContainer = document.getElementById('add-event-container');
+    const addEventButton = document.getElementById('show-add-event');
+
+    // Ukrywamy formularz i pokazujemy przycisk "Dodaj nowe wydarzenie"
+    addEventContainer.style.display = 'none';
+    addEventButton.style.display = 'block';
 }
 
 // Funkcja do wczytywania kategorii
@@ -222,6 +231,7 @@ function setupAddEventForm() {
                 alert('Wydarzenie dodane pomyślnie!');
                 loadEvents(); // Funkcja ładowania wydarzeń po dodaniu nowego
                 clearForm(); // Czyścimy formularz po dodaniu
+                hideAddEventForm(); // Ukrywamy formularz po dodaniu wydarzenia
             } else {
                 const errorData = await response.json();
                 alert(`Błąd: ${errorData.message || response.statusText}`);
