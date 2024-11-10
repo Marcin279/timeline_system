@@ -17,7 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
         showAddCategoryForm();
     });
 
+    // // Funkcja do anulowania edycji
+    // document.getElementById('cancel-edit').onclick = function() {
+    //     document.getElementById('edit-event-container').style.display = 'none';
+    // };
+
 });
+
+let events = [];
 
 function loadEvents() {
     // Sprawdzanie, czy użytkownik jest zalogowany i czy ma rolę admina
@@ -44,7 +51,8 @@ function loadEvents() {
         }
         return response.json();
     })
-    .then(events => {
+    .then(events_data => {
+        events = events_data;
         const timeline = document.getElementById('timeline');
         timeline.innerHTML = ''; // Czyszczenie zawartości
     
@@ -142,18 +150,6 @@ function formatDate(dateString) {
     }
 
     return date.toLocaleDateString('pl-PL'); // Format daty w polskim stylu (DD.MM.YYYY)
-}
-
-// Funkcja edycji wydarzenia
-function editEvent(index) {
-    alert(`Edytowanie wydarzenia o indeksie: ${index}`);
-    // Tu można dodać rzeczywistą logikę edycji, np. otwieranie formularza edycji
-}
-
-// Funkcja usuwania wydarzenia
-function deleteEvent(index) {
-    alert(`Usuwanie wydarzenia o indeksie: ${index}`);
-    // Tu można dodać rzeczywistą logikę usuwania, np. wywołanie API do usunięcia wydarzenia
 }
 
 // Funkcja do sprawdzenia, czy użytkownik jest administratorem
@@ -402,5 +398,186 @@ function removeEventFromUI(eventId) {
     const eventElement = document.getElementById(`event-${eventId}`);
     if (eventElement) {
         eventElement.remove(); // Usuwamy wydarzenie z interfejsu
+    }
+}
+
+let formCreated = false;
+
+function createEditForm() {
+    console.log('Tworzymy formularz Przed Ifem...');
+    if (formCreated) return;  // Tworzymy formularz tylko raz
+    console.log('Tworzymy formularz po Ifie...');
+    // Tworzenie kontenera formularza
+    const editContainer = document.createElement('div');
+    editContainer.id = 'edit-event-container';
+    editContainer.style.display = 'block'; // Formularz początkowo ukryty
+    // Dodanie tła
+    // const overlay = document.createElement('div');
+    // overlay.style.position = 'fixed';
+    // overlay.style.top = '0';
+    // overlay.style.left = '0';
+    // overlay.style.width = '100%';
+    // overlay.style.height = '100%';
+    // overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Półprzezroczyste tło
+    // overlay.style.zIndex = '9998';  // Tło poniżej formularza
+
+    // Pozycjonowanie formularza na środku ekranu
+    editContainer.style.position = 'fixed';
+    editContainer.style.top = '50%';
+    editContainer.style.left = '50%';
+    editContainer.style.transform = 'translate(-50%, -50%)';
+    editContainer.style.zIndex = '9999';  // Formularz na wierzchu
+
+    // Tworzenie pól formularza
+    const titleInput = document.createElement('input');
+    titleInput.id = 'edit-title';
+    titleInput.name = 'title';
+    titleInput.placeholder = 'Tytuł wydarzenia';
+
+    const startDateInput = document.createElement('input');
+    startDateInput.id = 'edit-start-date';
+    startDateInput.name = 'start_date';
+    startDateInput.type = 'date';
+    startDateInput.placeholder = 'Data rozpoczęcia';
+
+    const endDateInput = document.createElement('input');
+    endDateInput.id = 'edit-end-date';
+    endDateInput.name = 'end_date';
+    endDateInput.type = 'date';
+    endDateInput.placeholder = 'Data zakończenia';
+
+    const descriptionInput = document.createElement('textarea');
+    descriptionInput.id = 'edit-description';
+    descriptionInput.name = 'description';
+    descriptionInput.placeholder = 'Opis wydarzenia';
+
+    const categorySelect = document.createElement('select');
+    categorySelect.id = 'edit-category';
+    categorySelect.name = 'category_id';
+    
+    // // Dodawanie opcji kategorii
+    // categories.forEach(category => {
+    //     const option = document.createElement('option');
+    //     option.value = category.id;
+    //     option.textContent = category.name;
+    //     categorySelect.appendChild(option);
+    // });
+
+    const saveButton = document.createElement('button');
+    saveButton.id = 'save-event';
+    saveButton.textContent = 'Zapisz';
+
+    // Dodawanie elementów formularza do kontenera
+    editContainer.appendChild(titleInput);
+    editContainer.appendChild(startDateInput);
+    editContainer.appendChild(endDateInput);
+    editContainer.appendChild(descriptionInput);
+    editContainer.appendChild(categorySelect);
+    editContainer.appendChild(saveButton);
+
+    // Dodawanie formularza do dokumentu
+    // document.body.appendChild(overlay);
+    document.body.appendChild(editContainer); // Możesz zamiast `document.body` dodać formularz do innego kontenera
+    console.log('Formularz dodany do DOM', editContainer); // Logowanie elementu formularza
+    formCreated = true;
+}
+
+async function editEvent(eventId) {
+    const token = localStorage.getItem('token');
+    const url = `http://localhost:8081/api/events/${eventId}`; // URL dla szczegółów wydarzenia
+    createEditForm();
+    try {
+        // Pobierz dane wydarzenia
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Błąd odpowiedzi:', errorData);
+            throw new Error(errorData.message || 'Błąd podczas pobierania wydarzenia.');
+        }
+
+        const eventData = await response.json();
+
+        const categoriesResponse = await fetch('http://localhost:8081/api/categories', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const categoriesData = await categoriesResponse.json();
+
+        // Sprawdzamy, czy odpowiedź jest poprawna
+        if (!Array.isArray(categoriesData) || categoriesData.length === 0) {
+            console.error('Błąd: Odpowiedź z kategorii jest pusta.');
+            throw new Error('Nie udało się pobrać kategorii.');
+        }
+        
+        // Generowanie opcji kategorii w formularzu edycji
+        const categorySelect = document.getElementById('edit-category');
+        categoriesData.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+
+        // Uzupełnianie formularza wydarzenia
+        const editContainer = document.getElementById('edit-event-container');
+        document.getElementById('edit-title').value = eventData.title;
+        document.getElementById('edit-start-date').value = eventData.start_date.split('T')[0];
+        document.getElementById('edit-end-date').value = eventData.end_date.split('T')[0];
+        document.getElementById('edit-description').value = eventData.description;
+        document.getElementById('edit-category').value = eventData.category_id;
+
+        // Pokazujemy formularz edycji
+        editContainer.style.display = 'block';
+
+        // Obsługa zapisania edytowanego wydarzenia
+        document.getElementById('save-event').onclick = async function(e) {
+            e.preventDefault();
+
+            const updatedEvent = {
+                title: document.getElementById('edit-title').value,
+                start_date: document.getElementById('edit-start-date').value,
+                end_date: document.getElementById('edit-end-date').value,
+                description: document.getElementById('edit-description').value,
+                category_id: document.getElementById('edit-category').value,
+            };
+
+            try {
+                const updateResponse = await fetch(`http://localhost:8081/api/events/${eventId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedEvent),
+                });
+
+                if (!updateResponse.ok) {
+                    const data = await updateResponse.json();
+                    console.error('Błąd odpowiedzi z aktualizacji:', data);
+                    throw new Error(data.message || 'Błąd podczas edytowania wydarzenia.');
+                }
+
+                alert('Wydarzenie zostało zaktualizowane!');
+                editContainer.style.display = 'none';
+                loadEvents();
+            } catch (error) {
+                console.error('Błąd:', error);
+                alert('Wystąpił błąd podczas edytowania wydarzenia.');
+            }
+        };
+    } catch (error) {
+        console.error('Błąd:', error);
+        alert('Wystąpił błąd podczas pobierania wydarzenia.');
     }
 }

@@ -18,7 +18,7 @@ class EventController extends Controller
             ->orderBy('start_date', 'asc')
             ->orderBy('end_date', 'asc')
             ->get();
-            
+
         return response()->json($events);
     }
 
@@ -61,7 +61,13 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $event = Event::with('category')->find($id);
+
+        if (!$event) {
+            return response()->json(['message' => 'Wydarzenie nie znalezione.'], 404);
+        }
+
+        return response()->json($event);
     }
 
     /**
