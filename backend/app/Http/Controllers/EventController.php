@@ -14,7 +14,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('category')->get();
+        $events = Event::with('category')
+            ->orderBy('start_date', 'asc')
+            ->orderBy('end_date', 'asc')
+            ->get();
+            
         return response()->json($events);
     }
 
