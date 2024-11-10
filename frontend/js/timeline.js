@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
     if (isAdminUser()) {
         showAddEventForm(); 
-        setupAddEventForm();
     }
 });
 
@@ -132,9 +131,9 @@ function isAdminUser() {
     const userRole = localStorage.getItem('userRole');
     return token && userRole === 'admin';
 }
-
 // Funkcja do wyświetlania formularza dodawania nowego wydarzenia
 function showAddEventForm() {
+    // Dodaj formularz do strony
     const addEventFormHTML = `
         <form id="add-event-form">
             <h3>Dodaj nowe wydarzenie</h3>
@@ -149,6 +148,7 @@ function showAddEventForm() {
     `;
     document.getElementById('timeline').insertAdjacentHTML('beforebegin', addEventFormHTML);
     loadCategories();
+    setupAddEventForm(); // Uruchamiamy obsługę formularza po jego wyświetleniu
 }
 
 // Funkcja do wczytywania kategorii
@@ -178,8 +178,16 @@ function loadCategories() {
 // Funkcja obsługująca przesyłanie formularza dodawania wydarzeń
 function setupAddEventForm() {
     const addEventForm = document.getElementById('add-event-form');
+    const submitButton = addEventForm.querySelector('button'); // Przyciski formularza
+    let isSubmitting = false; // Flaga sprawdzająca, czy formularz jest już wysyłany
+
     addEventForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+
+        if (isSubmitting) return; // Jeśli formularz już jest wysyłany, zapobiegamy ponownemu wysłaniu
+
+        isSubmitting = true; // Ustawiamy flagę, że formularz jest wysyłany
+        submitButton.disabled = true; // Wyłączamy przycisk formularza
 
         const newEventData = {
             title: document.getElementById('title').value,
@@ -189,6 +197,14 @@ function setupAddEventForm() {
             image: document.getElementById('image').value,
             category_id: document.getElementById('category').value
         };
+
+        // Walidacja pól formularza
+        if (!newEventData.title || !newEventData.start_date || !newEventData.end_date || !newEventData.description || !newEventData.category_id) {
+            alert('Proszę uzupełnić wszystkie wymagane pola.');
+            isSubmitting = false; // Resetujemy flagę
+            submitButton.disabled = false; // Ponownie włączamy przycisk
+            return;
+        }
 
         const token = localStorage.getItem('token');
         try {
@@ -204,12 +220,23 @@ function setupAddEventForm() {
 
             if (response.ok) {
                 alert('Wydarzenie dodane pomyślnie!');
-                loadEvents();
+                loadEvents(); // Funkcja ładowania wydarzeń po dodaniu nowego
+                clearForm(); // Czyścimy formularz po dodaniu
             } else {
-                console.error('Błąd dodawania wydarzenia:', response.statusText);
+                const errorData = await response.json();
+                alert(`Błąd: ${errorData.message || response.statusText}`);
             }
         } catch (error) {
             console.error('Błąd:', error);
+            alert('Wystąpił problem z dodawaniem wydarzenia. Spróbuj ponownie później.');
         }
+
+        isSubmitting = false; // Resetujemy flagę
+        submitButton.disabled = false; // Ponownie włączamy przycisk
     });
+}
+
+// Funkcja czyszcząca formularz
+function clearForm() {
+    document.getElementById('add-event-form').reset();
 }

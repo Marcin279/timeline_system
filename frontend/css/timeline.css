@@ -216,6 +216,7 @@ h1, h2 {
   margin-top: 10px; /* Dodatkowa przestrzeń nad obrazkiem */
 }
 
+/* Style dla przycisków edycji i usuwania */
 .edit-button, .delete-button {
     display: inline-block;
     padding: 8px 12px;
@@ -229,7 +230,7 @@ h1, h2 {
 }
 
 .edit-button {
-    background-color: #4CAF50; /* Zielony kolor dla edytowania */
+    background-color: #4CAF50; /* Zielony kolor dla edycji */
 }
 
 .delete-button {
@@ -239,3 +240,64 @@ h1, h2 {
 .edit-button:hover, .delete-button:hover {
     opacity: 0.8;
 }
+
+/* Style dla formularza dodawania wydarzenia */
+#add-event-form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+}
+
+#add-event-form input, #add-event-form textarea, #add-event-form select {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#add-event-form button {
+    align-self: flex-start;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: white;
+    background-color: #56A2DB;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-event-form button:hover {
+    opacity: 0.9;
+}
+
+/* Style przycisku Dodaj nowe wydarzenie */
+#add-event-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: white;
+    background-color: #56A2DB;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-event-button:hover {
+    opacity: 0.9;
+}
+
+/* Style dla formularza dodawania wydarzenia */
+#add-event-form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+}
+
