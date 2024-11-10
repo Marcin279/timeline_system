@@ -4,12 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isAdminUser()) {
         // Pokaż przycisk tylko dla administratorów
         document.getElementById('show-add-event').style.display = 'block';
+        document.getElementById('show-add-category').style.display = 'block';
     }
     
     // Pokazanie formularza po kliknięciu
     document.getElementById('show-add-event').addEventListener('click', () => {
         showAddEventForm();
     });
+
+    // Dodaj nasłuchiwanie na przycisk "Dodaj kategorię"
+    document.getElementById('show-add-category').addEventListener('click', () => {
+        showAddCategoryForm();
+    });
+
 });
 
 function loadEvents() {
@@ -249,4 +256,81 @@ function setupAddEventForm() {
 // Funkcja czyszcząca formularz
 function clearForm() {
     document.getElementById('add-event-form').reset();
+}
+
+
+// Funkcja wyświetlająca formularz dodawania kategorii
+function showAddCategoryForm() {
+    const addCategoryContainer = document.getElementById('add-category-container');
+    const addCategoryButton = document.getElementById('show-add-category');
+
+    // Upewnij się, że formularz jest widoczny po kliknięciu przycisku
+    addCategoryContainer.style.display = 'block';  // Pokazujemy formularz
+    addCategoryButton.style.display = 'none';  // Ukrywamy przycisk
+
+    setupAddCategoryForm();
+}
+
+// Funkcja ukrywająca formularz dodawania kategorii
+function hideAddCategoryForm() {
+    document.getElementById('add-category-container').style.display = 'none';
+    document.getElementById('show-add-category').style.display = 'block';
+}
+
+// Funkcja obsługująca wysyłanie formularza dodawania kategorii
+async function setupAddCategoryForm() {
+    const addCategoryForm = document.getElementById('add-category-form');
+    const submitButton = addCategoryForm.querySelector('button');
+    let isSubmitting = false;
+
+    addCategoryForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (isSubmitting) return; // Jeśli formularz jest już wysyłany, zapobiegamy ponownemu wysyłaniu
+
+        isSubmitting = true; // Ustawiamy flagę
+        submitButton.disabled = true; // Wyłączamy przycisk
+
+        const newCategoryData = {
+            name: document.getElementById('category-name').value,
+            color: document.getElementById('category-color').value,
+            icon: document.getElementById('category-icon').value
+        };
+
+        // Walidacja formularza
+        if (!newCategoryData.name) {
+            alert('Proszę uzupełnić nazwę kategorii.');
+            isSubmitting = false;
+            submitButton.disabled = false;
+            return;
+        }
+
+        const token = localStorage.getItem('token'); // Token użytkownika
+        try {
+            const response = await fetch('http://localhost:8081/api/categories', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(newCategoryData)
+            });
+
+            if (response.ok) {
+                alert('Kategoria dodana pomyślnie!');
+                loadCategories(); // Funkcja ładowania kategorii
+                hideAddCategoryForm(); // Ukrywamy formularz
+            } else {
+                const errorData = await response.json();
+                alert(`Błąd: ${errorData.message || response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Błąd:', error);
+            alert('Wystąpił problem z dodawaniem kategorii. Spróbuj ponownie później.');
+        }
+
+        isSubmitting = false;
+        submitButton.disabled = false;
+    });
 }

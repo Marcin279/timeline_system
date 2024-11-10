@@ -35,6 +35,20 @@
         </form>
     </div>
 
+        <!-- Przycisk do wywołania formularza dodawania kategorii -->
+    <button id="show-add-category" style="display:none;">Dodaj nową kategorię</button>
+
+    <!-- Formularz do dodania kategorii (domyślnie ukryty) -->
+    <div id="add-category-container" style="display:none;">
+        <form id="add-category-form">
+            <h3>Dodaj nową kategorię</h3>
+            <input type="text" id="category-name" placeholder="Nazwa kategorii" required>
+            <input type="color" id="category-color" placeholder="Kolor">
+            <input type="text" id="category-icon" placeholder="Ikona (np. font-awesome)">
+            <button type="submit">Dodaj kategorię</button>
+        </form>
+    </div>
+
     <section id="timeline" class="container">
         <!-- Oś czasu jest generowana przez skrypt timeline.js -->
     </section>

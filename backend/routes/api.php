@@ -34,6 +34,10 @@ Route::delete('events/{id}', [EventController::class, 'destroy']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/categories', [CategoryController::class, 'store']);
+});
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
