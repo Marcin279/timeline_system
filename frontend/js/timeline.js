@@ -47,31 +47,32 @@ function loadEvents() {
     .then(events => {
         const timeline = document.getElementById('timeline');
         timeline.innerHTML = ''; // Czyszczenie zawartości
-
-        events.forEach((event, index) => {
+    
+        events.forEach((event) => {
             const eventBlock = document.createElement('div');
             eventBlock.classList.add('timeline-block');
-
+            eventBlock.id = `event-${event.id}`; // Dodajemy ID wydarzenia do DOM, aby móc je łatwo usunąć
+    
             const timelineImg = document.createElement('div');
             timelineImg.classList.add('timeline-img');
             eventBlock.appendChild(timelineImg);
-
+    
             const timelineContent = document.createElement('div');
             timelineContent.classList.add('timeline-content');
-
+    
             const title = document.createElement('h2');
             title.innerText = event.title;
-
+    
             const additionalInfo = document.createElement('div');
             additionalInfo.classList.add('additional-info');
-
+    
             // Formatowanie daty bez godziny
             const startDateFormatted = formatDate(event.start_date);
             const endDateFormatted = formatDate(event.end_date);
-
+    
             // Domyślny obraz, jeśli brak obrazu
             const imageUrl = event.image || 'https://via.placeholder.com/100';
-
+    
             additionalInfo.innerHTML = `
                 <div class="time-frame">${startDateFormatted} - ${endDateFormatted}</div>
                 <div class="category">${event.category.name}</div>
@@ -79,17 +80,17 @@ function loadEvents() {
                 <p>${event.description}</p>
             `;
             additionalInfo.style.display = 'none';
-
+    
             timelineContent.appendChild(title);
             timelineContent.appendChild(additionalInfo);
-
+    
             // Ustaw kolor tła na podstawie koloru kategorii
             const categoryColor = event.category ? event.category.color : '#ffffff'; // Kolor domyślny, jeśli kategoria nie ma koloru
             timelineContent.style.backgroundColor = categoryColor;
-
+    
             // Obliczanie jasności tła
             const brightness = getBrightness(categoryColor);
-
+    
             // Jeżeli jasność jest mniejsza niż 128, ustawiamy tekst na biały
             if (brightness < 128) {
                 timelineContent.style.color = '#ffffff'; // Ustawienie koloru tekstu na biały
@@ -98,26 +99,26 @@ function loadEvents() {
                 timelineContent.style.color = '#000000'; // Ustawienie koloru tekstu na czarny
                 title.style.color = '#000000';
             }
-
+    
             // Dodaj przyciski edycji i usuwania, jeśli użytkownik jest administratorem
             if (isAdmin) {
                 const editButton = document.createElement('button');
                 editButton.innerText = "Edytuj wydarzenie";
                 editButton.classList.add('edit-button');
-                editButton.onclick = () => editEvent(index);
-
+                editButton.onclick = () => editEvent(event.id);
+    
                 const deleteButton = document.createElement('button');
                 deleteButton.innerText = "Usuń wydarzenie";
                 deleteButton.classList.add('delete-button');
-                deleteButton.onclick = () => deleteEvent(index);
-
+                deleteButton.onclick = () => deleteEvent(event.id); // Przekazanie id do deleteEvent
+    
                 timelineContent.appendChild(editButton);
                 timelineContent.appendChild(deleteButton);
             }
-
+    
             eventBlock.appendChild(timelineContent);
             timeline.appendChild(eventBlock);
-
+    
             title.addEventListener('click', () => {
                 additionalInfo.style.display = additionalInfo.style.display === 'none' ? 'block' : 'none';
             });
@@ -364,4 +365,42 @@ function getBrightness(color) {
     const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
     return brightness;
+}
+
+// Funkcja do usuwania wydarzenia
+async function deleteEvent(eventId) {
+    const token = localStorage.getItem('token'); // Token użytkownika
+    const url = `http://localhost:8081/api/events/${eventId}`; // URL endpointu do usuwania wydarzenia
+
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`, // Przekazywanie tokenu w nagłówku
+                'X-Requested-With': 'XMLHttpRequest', // Przydatne w Laravel
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Wystąpił błąd podczas usuwania wydarzenia.');
+        }
+
+        const data = await response.json();
+        alert(data.message); // Powiadomienie o sukcesie
+
+        removeEventFromUI(eventId); // Usuwamy wydarzenie z UI
+    } catch (error) {
+        console.error('Błąd:', error);
+        alert('Błąd podczas usuwania wydarzenia.');
+    }
+}
+
+// Funkcja usuwająca wydarzenie z DOM
+function removeEventFromUI(eventId) {
+    const eventElement = document.getElementById(`event-${eventId}`);
+    if (eventElement) {
+        eventElement.remove(); // Usuwamy wydarzenie z interfejsu
+    }
 }
