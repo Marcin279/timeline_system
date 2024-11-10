@@ -83,6 +83,22 @@ function loadEvents() {
             timelineContent.appendChild(title);
             timelineContent.appendChild(additionalInfo);
 
+            // Ustaw kolor tła na podstawie koloru kategorii
+            const categoryColor = event.category ? event.category.color : '#ffffff'; // Kolor domyślny, jeśli kategoria nie ma koloru
+            timelineContent.style.backgroundColor = categoryColor;
+
+            // Obliczanie jasności tła
+            const brightness = getBrightness(categoryColor);
+
+            // Jeżeli jasność jest mniejsza niż 128, ustawiamy tekst na biały
+            if (brightness < 128) {
+                timelineContent.style.color = '#ffffff'; // Ustawienie koloru tekstu na biały
+                title.style.color = '#ffffff';
+            } else {
+                timelineContent.style.color = '#000000'; // Ustawienie koloru tekstu na czarny
+                title.style.color = '#000000';
+            }
+
             // Dodaj przyciski edycji i usuwania, jeśli użytkownik jest administratorem
             if (isAdmin) {
                 const editButton = document.createElement('button');
@@ -333,4 +349,19 @@ async function setupAddCategoryForm() {
         isSubmitting = false;
         submitButton.disabled = false;
     });
+}
+
+function getBrightness(color) {
+    // Usuwanie # na początku koloru hex (jeśli jest)
+    color = color.replace('#', '');
+
+    // Przekształcanie kolorów hex na RGB
+    let r = parseInt(color.substr(0, 2), 16);
+    let g = parseInt(color.substr(2, 2), 16);
+    let b = parseInt(color.substr(4, 2), 16);
+
+    // Obliczanie jasności na podstawie składowych RGB
+    const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+    return brightness;
 }
