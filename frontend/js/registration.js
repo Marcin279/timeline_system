@@ -3,11 +3,11 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 
     // Zbieranie danych z formularza
     const formData = new FormData(this);
-    console.log(Array.from(formData.entries())); // Wyświetli wszystkie pary klucz-wartość
 
     // Pobranie wartości hasła i potwierdzenia hasła
     const password = formData.get('password');
     const passwordConfirmation = formData.get('confirm_password'); // Upewnij się, że nazwa jest zgodna
+    const userName = formData.get('username');
 
     // Walidacja haseł
     if (password !== passwordConfirmation) {
@@ -29,6 +29,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
             // Jeśli rejestracja powiodła się
             alert(data.message); // Możesz przekierować lub wykonać inną akcję tutaj
             localStorage.setItem('token', data.token);
+            localStorage.setItem('userName', userName);
             window.location.href = 'index.html';
         } else {
             // Jeśli wystąpiły błędy
