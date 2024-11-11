@@ -249,8 +249,8 @@ function setupAddEventForm() {
 
             if (response.ok) {
                 alert('Wydarzenie dodane pomyślnie!');
-                loadEvents(); // Funkcja ładowania wydarzeń po dodaniu nowego
                 clearForm(); // Czyścimy formularz po dodaniu
+                loadEvents(); // Funkcja ładowania wydarzeń po dodaniu nowego
                 hideAddEventForm(); // Ukrywamy formularz po dodaniu wydarzenia
             } else {
                 const errorData = await response.json();
@@ -269,6 +269,10 @@ function setupAddEventForm() {
 // Funkcja czyszcząca formularz
 function clearForm() {
     document.getElementById('add-event-form').reset();
+}
+
+function clearCategoryForm() {
+    document.getElementById('add-category-form').reset();
 }
 
 
@@ -332,6 +336,7 @@ async function setupAddCategoryForm() {
 
             if (response.ok) {
                 alert('Kategoria dodana pomyślnie!');
+                clearCategoryForm();
                 loadCategories(); // Funkcja ładowania kategorii
                 hideAddCategoryForm(); // Ukrywamy formularz
             } else {
