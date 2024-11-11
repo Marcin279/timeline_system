@@ -2,6 +2,7 @@
 # TimeLine System
 
 ## Opis
+System pamiętnikowy na osi czasu to narzędzie umożliwiające rejestrowanie i prezentowanie wydarzeń w formie odcinków czasu na osi chronologicznej.
 Ten projekt zawiera frontend oparty na Nginx, backend oparty na Laravel oraz bazę danych MySQL. Wszystkie usługi są uruchamiane za pomocą Docker Compose, co pozwala na łatwe uruchamianie i zarządzanie środowiskiem deweloperskim.
 
 ## Struktura Katalogów
@@ -72,6 +73,3 @@ docker-compose down -v
 ## Problemy i rozwiązania
 - **Błąd przy uruchamianiu Docker**: Upewnij się, że Docker jest uruchomiony na Twoim systemie, a także, że masz wystarczającą ilość dostępnych zasobów (RAM, CPU).
 - **Brak połączenia z MySQL**: Sprawdź, czy kontener MySQL działa poprawnie. Możesz to zrobić za pomocą komendy `docker ps`.
-
-## Licencja
-Projekt jest dostępny na licencji MIT.
