@@ -29,7 +29,7 @@ Najpierw sklonuj repozytorium na swoje lokalne urządzenie:
 
 ```bash
 git clone https://github.com/Marcin279/timeline_system.git
-cd TwojeRepozytorium
+cd timeline_system
 ```
 
 ### 2. Budowanie i uruchamianie kontenerów
