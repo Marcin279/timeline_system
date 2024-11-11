@@ -17,11 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showAddCategoryForm();
     });
 
-    // // Funkcja do anulowania edycji
-    // document.getElementById('cancel-edit').onclick = function() {
-    //     document.getElementById('edit-event-container').style.display = 'none';
-    // };
-
 });
 
 let events = [];
@@ -33,10 +28,6 @@ function loadEvents() {
 
     // Jeżeli nie ma tokenu, uznajemy, że użytkownik jest niezalogowany
     const isAdmin = token && userRole === 'admin';  // Tylko jeśli jest admin, wyświetlamy przyciski edycji/usuwania
-
-    console.log('Token:', token);  // Debugging
-    console.log('User Role:', userRole);  // Debugging
-
 
     fetch('http://localhost:8081/api/events', {
         method: 'GET',
@@ -163,11 +154,10 @@ function showAddEventForm() {
     const addEventContainer = document.getElementById('add-event-container');
     const addEventButton = document.getElementById('show-add-event');
 
-    // Upewnij się, że formularz jest widoczny po kliknięciu przycisku
     addEventContainer.style.display = 'block';  // Pokazujemy formularz
     addEventButton.style.display = 'none';  // Ukrywamy przycisk
 
-    loadCategories();  // Ładujemy kategorie, żeby formularz był gotowy do użycia
+    loadCategories();
     setupAddEventForm();  // Inicjalizujemy obsługę formularza
 }
 
@@ -322,7 +312,7 @@ async function setupAddCategoryForm() {
             return;
         }
 
-        const token = localStorage.getItem('token'); // Token użytkownika
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('http://localhost:8081/api/categories', {
                 method: 'POST',
@@ -416,15 +406,6 @@ function createEditForm() {
     const editContainer = document.createElement('div');
     editContainer.id = 'edit-event-container';
     editContainer.style.display = 'block'; // Formularz początkowo ukryty
-    // Dodanie tła
-    // const overlay = document.createElement('div');
-    // overlay.style.position = 'fixed';
-    // overlay.style.top = '0';
-    // overlay.style.left = '0';
-    // overlay.style.width = '100%';
-    // overlay.style.height = '100%';
-    // overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // Półprzezroczyste tło
-    // overlay.style.zIndex = '9998';  // Tło poniżej formularza
 
     // Pozycjonowanie formularza na środku ekranu
     editContainer.style.position = 'fixed';
@@ -459,14 +440,6 @@ function createEditForm() {
     const categorySelect = document.createElement('select');
     categorySelect.id = 'edit-category';
     categorySelect.name = 'category_id';
-    
-    // // Dodawanie opcji kategorii
-    // categories.forEach(category => {
-    //     const option = document.createElement('option');
-    //     option.value = category.id;
-    //     option.textContent = category.name;
-    //     categorySelect.appendChild(option);
-    // });
 
     const saveButton = document.createElement('button');
     saveButton.id = 'save-event';
@@ -481,9 +454,7 @@ function createEditForm() {
     editContainer.appendChild(saveButton);
 
     // Dodawanie formularza do dokumentu
-    // document.body.appendChild(overlay);
-    document.body.appendChild(editContainer); // Możesz zamiast `document.body` dodać formularz do innego kontenera
-    console.log('Formularz dodany do DOM', editContainer); // Logowanie elementu formularza
+    document.body.appendChild(editContainer);
     formCreated = true;
 }
 

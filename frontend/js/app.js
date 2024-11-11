@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const logoutButton = document.getElementById('logout-button');
   // Sprawdzenie czy przycisk wylogowania istnieje w DOM
-  // const logoutButton = document.getElementById('logout-button');
   if (logoutButton) {
     logoutButton.addEventListener('click', async () => {
       const token = localStorage.getItem('token');
@@ -40,8 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
               localStorage.removeItem('token');
               localStorage.removeItem('userRole');
               localStorage.removeItem('userName');
-              // Opcjonalnie: odśwież stronę lub przekieruj użytkownika
-              window.location.reload(); // Jeśli chcesz odświeżyć stronę po wylogowaniu
+              window.location.reload();
           } else {
               console.error('Błąd podczas wylogowywania:', response.statusText);
           }

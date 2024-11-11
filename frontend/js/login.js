@@ -37,9 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const isAdmin = result.user.role === 'admin';
                 console.log('Czy użytkownik jest administratorem:', isAdmin); // Sprawdzenie w konsoli
 
-                // Możesz przekierować użytkownika lub wykonać inne akcje
-                console.log('Rola użytkownika:', localStorage.getItem('userRole'));
-
                 // Przekieruj użytkownika na stronę główną
                 console.log('Role before redirect:', localStorage.getItem('userRole')); // Debug
                 window.location.href = 'index.html';

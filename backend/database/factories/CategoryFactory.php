@@ -14,7 +14,7 @@ class CategoryFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'color' => $this->faker->hexColor(), // Losowy kolor w formacie hex
-            'icon' => null, // Możesz dodać ikonę, jeśli potrzebujesz
+            'icon' => null,
         ];
     }
 }

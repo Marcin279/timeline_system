@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // Pobierz wszystkie kategorie z bazy danych
+        // Pobierz wszystkie kategorie
         try {
             $categories = Category::all();
             Log::info($categories);
@@ -32,15 +32,6 @@ class CategoryController extends Controller
 
     }
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  * GET /categories/create
-    //  */
-    // public function create()
-    // {
- 
-    // }
-
     /**
      * Store a newly created resource in storage.
      * POST /categories
@@ -51,7 +42,7 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'color' => 'nullable|string|max:7', // kolor w formacie hex
-            'icon' => 'nullable|string|max:255', // np. klasa ikony z font-awesome
+            'icon' => 'nullable|string|max:255',
         ]);
 
         // Utworzenie nowej kategorii
@@ -72,14 +63,6 @@ class CategoryController extends Controller
         // Zwrócenie danych kategorii w formacie JSON
         return response()->json($category, 200);
     }
-
-    // /**      
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(string $id)
-    // {
-    //     //
-    // }
 
     /**
      * Update the specified resource in storage.

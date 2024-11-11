@@ -27,14 +27,14 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     .then(data => {
         if (data.token) {
             // Jeśli rejestracja powiodła się
-            alert(data.message); // Możesz przekierować lub wykonać inną akcję tutaj
+            alert(data.message);
             localStorage.setItem('token', data.token);
             localStorage.setItem('userName', userName);
             localStorage.setItem('userRole', data.role);
             window.location.href = 'index.html';
         } else {
             // Jeśli wystąpiły błędy
-            alert(data.message); // Pokaż komunikat o błędzie
+            alert(data.message);
         }
     })
     .catch(error => {

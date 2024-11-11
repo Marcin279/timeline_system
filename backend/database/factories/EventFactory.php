@@ -17,7 +17,7 @@ class EventFactory extends Factory
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'description' => $this->faker->paragraph(),
-            'image' => null, // Możesz dodać ścieżkę do losowego obrazka, jeśli potrzebujesz
+            'image' => null,
             'category_id' => Category::factory(), // Powiązanie z kategorią
         ];
     }
