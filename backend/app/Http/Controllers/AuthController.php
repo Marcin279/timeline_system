@@ -21,7 +21,7 @@ class AuthController extends Controller
         // Walidacja danych wejściowych
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string|min:3',
+            'password' => 'required|string|min:8',
         ]);
 
         // Pobieranie danych logowania
@@ -103,5 +103,28 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logout successful'])->withCookie($cookie);
     }
     
-
+    public function changePassword(Request $request)
+    {
+        // Pobranie aktualnie zalogowanego użytkownika
+        $user = Auth::user();
+    
+        // Walidacja danych wejściowych
+        $request->validate([
+            'current_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|confirmed', // Potwierdzenie nowego hasła
+        ]);
+    
+        // Sprawdzanie, czy stare hasło jest poprawne
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Błędne obecne hasło.'], 400);
+        }
+    
+        // Zmiana hasła
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+    
+        return response()->json(['message' => 'Hasło zostało zmienione pomyślnie.']);
+    }
+    
 }

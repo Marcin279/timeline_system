@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->post('/change-password', [AuthController::class, 'changePassword']);
 
 // Routing dla Event Controller
 Route::get('events', [EventController::class, 'index']);

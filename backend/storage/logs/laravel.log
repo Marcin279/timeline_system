@@ -518,3 +518,15 @@
 [2024-11-11 00:12:06] local.INFO: Wylogowanie użytkownika: 17  
 [2024-11-11 00:17:11] local.INFO: Wylogowanie użytkownika: 19  
 [2024-11-11 00:20:54] local.INFO: Wylogowanie użytkownika: 21  
+[2024-11-11 00:33:32] local.INFO: Attempting login {"email":"krzysztof.biela@gmail.com","password":"ziziorek"} 
+[2024-11-11 00:33:33] local.INFO: Login successful {"user":{"App\\Models\\User":{"id":13,"first_name":"Krzysztof","last_name":"Biela","username":"kbiela","email":"krzysztof.biela@gmail.com","role":"reader","created_at":"2024-11-10T23:57:51.000000Z","updated_at":"2024-11-10T23:57:51.000000Z"}}} 
+[2024-11-11 00:34:42] local.INFO: Wylogowanie użytkownika: 13  
+[2024-11-11 00:35:34] local.INFO: Attempting login {"email":"krzysztof.biela@gmail.com","password":"ziziorek"} 
+[2024-11-11 00:35:35] local.INFO: Login successful {"user":{"App\\Models\\User":{"id":13,"first_name":"Krzysztof","last_name":"Biela","username":"kbiela","email":"krzysztof.biela@gmail.com","role":"admin","created_at":"2024-11-10T23:57:51.000000Z","updated_at":"2024-11-10T23:57:51.000000Z"}}} 
+[2024-11-11 00:37:18] local.INFO: Wylogowanie użytkownika: 13  
+[2024-11-11 00:37:52] local.INFO: Attempting login {"email":"krzysztof.biela@gmail.com","password":"ziziorek1"} 
+[2024-11-11 00:37:53] local.INFO: Login successful {"user":{"App\\Models\\User":{"id":13,"first_name":"Krzysztof","last_name":"Biela","username":"kbiela","email":"krzysztof.biela@gmail.com","role":"admin","created_at":"2024-11-10T23:57:51.000000Z","updated_at":"2024-11-11T00:36:51.000000Z"}}} 
+[2024-11-11 00:49:15] local.INFO: Wylogowanie użytkownika: 13  
+[2024-11-11 00:50:02] local.INFO: Attempting login {"email":"krzysztof.biela@gmail.com","password":"ziziorek"} 
+[2024-11-11 00:50:03] local.INFO: Login successful {"user":{"App\\Models\\User":{"id":13,"first_name":"Krzysztof","last_name":"Biela","username":"kbiela","email":"krzysztof.biela@gmail.com","role":"admin","created_at":"2024-11-10T23:57:51.000000Z","updated_at":"2024-11-11T00:48:58.000000Z"}}} 
+[2024-11-11 00:50:29] local.INFO: Wylogowanie użytkownika: 13  
