@@ -30,6 +30,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
             alert(data.message); // Możesz przekierować lub wykonać inną akcję tutaj
             localStorage.setItem('token', data.token);
             localStorage.setItem('userName', userName);
+            localStorage.setItem('userRole', data.role);
             window.location.href = 'index.html';
         } else {
             // Jeśli wystąpiły błędy

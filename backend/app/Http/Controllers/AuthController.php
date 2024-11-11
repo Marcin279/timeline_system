@@ -73,6 +73,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'admin',
             'remember_token' => null,
         ]);
         
@@ -82,6 +83,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Rejestracja zakończona sukcesem',
             'token' => $token,  // Zwracamy token w odpowiedzi
+            'role' => $user->role, // Zwracamy rolę użytkownika
         ], 201);
     }
 
